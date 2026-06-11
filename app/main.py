@@ -1,20 +1,19 @@
 from typing import Callable, Any
 
-store_data = {}
-cache_data = {}
-
 
 def cache(func: Callable) -> Callable:
+    cache_dict = {}
 
     def wrapper(*args: Any, **kwargs: Any) -> Any:
-        key = (func, args, tuple(sorted(kwargs.items())))
-        if key in store_data:
+        key = (args, tuple(sorted(kwargs.items())))
+
+        if key in cache_dict:
             print("Getting from cache")
-            return store_data[key]
+            return cache_dict[key]
 
         print("Calculating new result")
         result = func(*args, **kwargs)
-        store_data[key] = result
+        cache_dict[key] = result
         return result
 
     return wrapper
